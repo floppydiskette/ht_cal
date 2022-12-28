@@ -5,7 +5,7 @@ use crate::datetime::HDateTime;
 use crate::history::HistoryData;
 use crate::packet::PacketData;
 
-pub const HOST: &str = "127.0.0.1";
+pub const HOST: &str = "0.0.0.0"; // should be firewalled
 pub const PORT_Q: u16 = 3621;
 pub const PORT_H: u16 = 3926;
 
