@@ -52,8 +52,8 @@ impl HDateTime {
                 tmp = tmp * tmp;
                 tmp = tmp * tmp;
                 tmp = tmp * tmp;
-                let storage_low = storage;
-                storage += storage_low;
+                let storage_low = tmp;
+                storage += storage_low.0;
             }
             {
                 let mut me = me.lock().await;
