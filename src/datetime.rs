@@ -33,7 +33,7 @@ impl HDateTime {
         HDateTime {
             year: 0,
             month: (MonthStatus::Greater, Month::Zero),
-            day: 0,
+            day: 1,
             second: Wrapping(0),
             time_since_second: chrono::Duration::zero(),
             storage: 0,
@@ -45,7 +45,7 @@ impl HDateTime {
             let time_at_start = chrono::Utc::now();
             // do a complex thing 1000 times and then log a second
             let mut storage = 0;
-            for _ in 0..1500000 {
+            for _ in 0..51000000 {
                 let mut tmp = rand::random::<Wrapping<u8>>();
                 tmp = tmp * tmp;
                 tmp = tmp * tmp;
@@ -58,7 +58,7 @@ impl HDateTime {
             {
                 let mut me = me.lock().await;
                 me.second += Wrapping(1);
-                me.time_since_second = time_at_start - chrono::Utc::now();
+                me.time_since_second = chrono::Utc::now() - time_at_start;
                 me.storage = storage; // just to kinda make sure it doesn't get optimised out
             }
         }
@@ -71,7 +71,7 @@ impl HDateTime {
         me.second = Wrapping(0);
         // if the day is greater than 24, then advance the month
         if me.day > 24 {
-            me.day = 0;
+            me.day = 1;
             // if lesser month, go to greater month; if greater month, go to next month (and switch to lesser month)
             match me.month.1 {
                 Month::Zero => {
@@ -126,7 +126,7 @@ impl HDateTime {
 
     pub async fn get_week_number(me: Arc<Mutex<Self>>) -> u8 {
         let me = me.lock().await;
-        me.day / 4
+        (me.day - 1) / 4
     }
 
     pub fn format_month_name(&self) -> String {
